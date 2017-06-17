@@ -1,4 +1,4 @@
-angular.module('multiSelect').directive("multiSelect", () => {
+angular.module('multiSelect').directive("multiSelect", function () {
     return {
         restrict: "E",
         scope: {
@@ -8,17 +8,17 @@ angular.module('multiSelect').directive("multiSelect", () => {
             settings: "@settings"
         },
         templateUrl: "multi-select-tpl.html",
-        link: ($scope, element, attr) => {
+        link: function ($scope, element, attr) {
             if (!$scope.model || !Array.isArray($scope.model)) {
                 $scope.model = [];
             }
             $scope.showOptions = false;
 
-            $scope.Display = (val) => {
+            $scope.Display = function (val) {
                 return val;
             }
 
-            $scope.Add = (val) => {
+            $scope.Add = function (val) {
                 if (!val) return;
                 $scope.action = true;
                 $scope.model.push(val);
@@ -30,7 +30,7 @@ angular.module('multiSelect').directive("multiSelect", () => {
                 })
             }
 
-            $scope.Remove = (val, event) => {
+            $scope.Remove = function (val, event) {
                 $scope.model.splice($scope.model.indexOf(val), 1)
                 $scope.Change({
                     event: "remove",
@@ -39,22 +39,22 @@ angular.module('multiSelect').directive("multiSelect", () => {
                 if (event) event.stopPropagation();
             }
 
-            $scope.Show = (val) => {
+            $scope.Show = function (val) {
                 return $scope.model.indexOf(val) < 0;
             }
 
-            $scope.FocusSearch = () => {
+            $scope.FocusSearch = function () {
                 element[0].getElementsByClassName("ms-search")[0].focus();
                 $scope.ShowOptions(true);
             }
 
-            $scope.ShowOptions = (bool) => {
+            $scope.ShowOptions = function (bool) {
                 bool == null ? !$scope.showOptions : bool;
                 $scope.showOptions = bool;
                 $scope.selected = 0;
             }
 
-            $scope.HideOptions = () => {
+            $scope.HideOptions = function () {
                 if ($scope.action) {
                     $scope.FocusSearch();
                     $scope.action = false;
@@ -63,11 +63,11 @@ angular.module('multiSelect').directive("multiSelect", () => {
                 $scope.showOptions = false;
             }
 
-            $scope.Select = (i) => {
+            $scope.Select = function (i) {
                 $scope.selected = i;
             }
 
-            $scope.Key = (event) => {
+            $scope.Key = function (event) {
                 if (!event.key) return;
                 switch (event.key) {
                     case "Enter":
