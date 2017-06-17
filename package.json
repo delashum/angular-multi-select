@@ -1,5 +1,5 @@
 {
-    "name": "angular-multiselect",
+    "name": "angular-multipleselect",
     "version": "1.0.0",
     "description": "Angular directive for a easy to use and good looking multiselect field.",
     "main": "index.js",
