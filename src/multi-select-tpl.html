@@ -101,7 +101,7 @@
             <span ng-click="ShowOptions()" class="ms-caret arrow-down"></span>
         </div>
         <div ng-show="showOptions" class="ms-options">
-            <div ng-mouseover="Select($index)" ng-mousedown="Add(option)" ng-class="{'selected':selected===$index}" class="ms-option" ng-repeat="option in (shown = (options | filter:Show | filter:search))">{{Display(option)}}</div>
+            <div ng-mouseover="Select($index)" ng-mousedown="Add(option)" ng-class="{\'selected\':selected===$index}" class="ms-option" ng-repeat="option in (shown = (options | filter:Show | filter:search))">{{Display(option)}}</div>
             <div class="ms-option" ng-show="shown.length == 0">No Matches</div>
         </div>
     </div>
