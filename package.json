@@ -1,0 +1,26 @@
+{
+    "name": "angular-multiselect",
+    "version": "1.0.0",
+    "description": "Angular directive for a easy to use and good looking multiselect field.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/delashum/angular-multi-select.git"
+    },
+    "dependencies": {
+        "angular": "~1"
+    },
+    "keywords": [
+        "multiselect",
+        "angular"
+    ],
+    "author": "delashum <delashum@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/delashum/angular-multi-select/issues"
+    },
+    "homepage": "https://github.com/delashum/angular-multi-select#readme"
+}

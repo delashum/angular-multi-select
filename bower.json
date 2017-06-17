@@ -1,0 +1,19 @@
+{
+    "name": "angular-multiselect",
+    "homepage": "https://github.com/delashum/angular-multi-select",
+    "authors": [
+        "delashum <delashum@gmail.com>"
+    ],
+    "description": "A multi-select field type implemented as an angular directive. No dependencies",
+    "main": "",
+    "keywords": [
+        "multiselect",
+        "angular",
+        "multi",
+        "select"
+    ],
+    "dependencies": {
+        "angular": "~1.5"
+    },
+    "license": "MIT"
+}
