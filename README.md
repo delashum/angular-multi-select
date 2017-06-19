@@ -2,6 +2,10 @@
 
 An Angular directive for a multi-select field type.
 
+### Demo
+
+https://embed.plnkr.co/0c4dvGOsSda1soHal8mH/
+
 ## Installation
 
 ```
