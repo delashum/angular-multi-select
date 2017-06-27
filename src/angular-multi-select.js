@@ -1,4 +1,4 @@
-angular.module('multiSelect', [])
+var A = angular.module('multiSelect', [])
 
 .directive("multiSelect", function () {
     return {
@@ -7,7 +7,7 @@ angular.module('multiSelect', [])
             model: "=msModel",
             Change: "=msChange",
             options: "=msOptions",
-            settings: "@settings"
+            settings: "=msSettings"
         },
         templateUrl: 'multi-select-tpl.html',
         link: function ($scope, element, attr) {
@@ -17,6 +17,10 @@ angular.module('multiSelect', [])
             $scope.showOptions = false;
 
             $scope.Display = function (val) {
+                if ($scope.settings && $scope.settings.display && /^[a-zA-Z\.]+$/.test($scope.settings.display)) {
+
+                    return eval("val." + $scope.settings.display);
+                }
                 return val;
             }
 
@@ -99,6 +103,115 @@ angular.module('multiSelect', [])
     }
 })
 
-.run(["$templateCache", function ($templateCache) {
-    $templateCache.put("multi-select-tpl.html", '<div> <style> .ms-main { min-height: 50px; position: relative } .ms-input { outline: none; border-radius: 4px; border: 1px solid #a7a7a7; padding: 2px 34px 4px 4px; } .ms-options { position: absolute; left: 0; margin-top: -3px; right: 0; background-color: white; border: 1px solid #b7b7b7; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; max-height: 200px; overflow-y: scroll; } .ms-option { padding: 5px 15px; } .ms-search { outline: none; border: none; font-size: 13px; padding: 7px; width: 30px; } .ms-caret { position: absolute; right: 18px; cursor: pointer; top: 10px; margin-top: 6px; margin-right: -8px; color: gray; } .ms-caret:hover { opacity: 0.8 } .ms-item { margin: 3px; background-color: #dbe3f7; border: 1px solid #9ba8ce; border-radius: 3px; display: inline-block; } .ms-item-remove { cursor: pointer; color: #505050; border-left: 1px solid #9ba8ce; vertical-align: middle; display: inline-block; padding: 0px 5px 2px 5px; } .ms-item-remove:hover { background-color: #cdd7f4 } .ms-item-label { padding: 0px 1px 0px 5px; vertical-align: middle; font-size: 15px; } .arrow-down { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid; } .selected { background-color: aliceblue; } </style> <div class="ms-main"> <div ng-click="FocusSearch()" class="ms-input"> <div class="ms-item" ng-repeat="item in model"> <span class="ms-item-label">{{Display(item)}}</span> <span class="ms-item-remove" ng-click="Remove(item,$event)">×</span> </div> <input ng-keyup="Key($event)" ng-blur="HideOptions()" class="ms-search" ng-model="search"> <span ng-click="ShowOptions()" class="ms-caret arrow-down"></span> </div> <div ng-show="showOptions" class="ms-options"> <div ng-mouseover="Select($index)" ng-mousedown="Add(option)" ng-class="{\'selected\':selected===$index}" class="ms-option" ng-repeat="option in (shown = (options | filter:Show | filter:search))">{{Display(option)}}</div> <div class="ms-option" ng-show="shown.length == 0">No Matches</div> </div> </div></div>')
+var html = `<div>
+    <style>
+        .ms-main {
+            min-height: 50px;
+            position: relative
+        }
+        
+        .ms-input {
+            outline: none;
+            border-radius: 4px;
+            border: 1px solid #a7a7a7;
+            padding: 2px 34px 4px 4px;
+        }
+        
+        .ms-options {
+            position: absolute;
+            left: 0;
+            margin-top: -3px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #b7b7b7;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+        
+        .ms-option {
+            padding: 5px 15px;
+        }
+        
+        .ms-search {
+            outline: none;
+            border: none;
+            font-size: 13px;
+            padding: 7px;
+            width: 30px;
+        }
+        
+        .ms-caret {
+            position: absolute;
+            right: 18px;
+            cursor: pointer;
+            top: 10px;
+            margin-top: 6px;
+            margin-right: -8px;
+            color: gray;
+        }
+        
+        .ms-caret:hover {
+            opacity: 0.8
+        }
+        
+        .ms-item {
+            margin: 3px;
+            background-color: #dbe3f7;
+            border: 1px solid #9ba8ce;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        .ms-item-remove {
+            cursor: pointer;
+            color: #505050;
+            border-left: 1px solid #9ba8ce;
+            vertical-align: middle;
+            display: inline-block;
+            padding: 0px 5px 2px 5px;
+        }
+        
+        .ms-item-remove:hover {
+            background-color: #cdd7f4
+        }
+        
+        .ms-item-label {
+            padding: 0px 1px 0px 5px;
+            vertical-align: middle;
+            font-size: 15px;
+        }
+        
+        .arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid;
+        }
+        
+        .selected {
+            background-color: aliceblue;
+        }
+
+    </style>
+    <div class="ms-main">
+        <div ng-click="FocusSearch()" class="ms-input">
+            <div class="ms-item" ng-repeat="item in model">
+                <span class="ms-item-label">{{Display(item)}}</span>
+                <span class="ms-item-remove" ng-click="Remove(item,$event)">&times;</span>
+            </div>
+            <input ng-keyup="Key($event)" ng-blur="HideOptions()" class="ms-search" ng-model="search">
+            <span ng-click="ShowOptions()" class="ms-caret arrow-down"></span>
+        </div>
+        <div ng-show="showOptions" class="ms-options">
+            <div ng-mouseover="Select($index)" ng-mousedown="Add(option)" ng-class="{\'selected\':selected===$index}" class="ms-option" ng-repeat="option in (shown = (options | filter:Show | filter:search))">{{Display(option)}}</div>
+            <div class="ms-option" ng-show="shown.length == 0">No Matches</div>
+        </div>
+    </div>
+</div>`;
+
+A.run(["$templateCache", function ($templateCache) {
+    $templateCache.put("multi-select-tpl.html", html)
 }])

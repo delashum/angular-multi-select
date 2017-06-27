@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Angular MultipleSelect Demo</title>
+    <script src="https://code.angularjs.org/1.5.8/angular.js"></script>
+    <script src="src/angular-multi-select.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="main">
+    <div style="width:50%;display:inline-block">
+        <multi-select ms-model="model" ms-options="optionsObj" ms-change="Change" ms-settings="settings"></multi-select>
+    </div>
+    <div style="width:49%;display:inline-block">
+        <div>Change: {{change}}</div>
+        <div>Model: {{model}}</div>
+    </div>
+
+</body>
+<script>
+    angular.module("app", ['multiSelect'])
+        .controller("main", function($scope) {
+
+            $scope.options = ["Banana", "Orange", "Apple", "Mango", "Peach", "Watermelon", "Pineapple", "Tangerine", "Grape", "Cantelope", "Strawberry", "Raspberry"]
+            $scope.optionsObj = [{
+                "value": "Banana",
+                "id": 0
+            }, {
+                "value": "Orange",
+                "id": 1
+            }, {
+                "value": "Apple",
+                "id": 2
+            }, {
+                "value": "Mango",
+                "id": 3
+            }, {
+                "value": "Peach",
+                "id": 4
+            }, {
+                "value": "Watermelon",
+                "id": 5
+            }, {
+                "value": "Pineapple",
+                "id": 6
+            }, {
+                "value": "Tangerine",
+                "id": 7
+            }, {
+                "value": "Grape",
+                "id": 8
+            }, {
+                "value": "Cantelope",
+                "id": 9
+            }, {
+                "value": "Strawberry",
+                "id": 10
+            }, {
+                "value": "Raspberry",
+                "id": 11
+            }]
+
+            $scope.settings = {
+                display: "value"
+            }
+            $scope.Change = function(change) {
+                $scope.change = change;
+            }
+
+        })
+
+</script>
+
+</html>
