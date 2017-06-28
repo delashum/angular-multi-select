@@ -9,11 +9,12 @@
 
 <body ng-app="app" ng-controller="main">
     <div style="width:50%;display:inline-block">
-        <multi-select ms-model="model" ms-options="optionsObj" ms-change="Change" ms-settings="settings"></multi-select>
+        <multi-select ms-disabled="disable" ms-model="model" ms-options="optionsObj" ms-change="Change" ms-settings="settings"></multi-select>
     </div>
     <div style="width:49%;display:inline-block">
         <div>Change: {{change}}</div>
         <div>Model: {{model}}</div>
+        <input type="checkbox" ng-model="disable">
     </div>
 
 </body>

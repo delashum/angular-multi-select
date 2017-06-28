@@ -7,7 +7,8 @@ var A = angular.module('multiSelect', [])
             model: "=msModel",
             Change: "=msChange",
             options: "=msOptions",
-            settings: "=msSettings"
+            settings: "=msSettings",
+            disabled: "=msDisabled"
         },
         templateUrl: 'multi-select-tpl.html',
         link: function ($scope, element, attr) {
@@ -18,7 +19,6 @@ var A = angular.module('multiSelect', [])
 
             $scope.Display = function (val) {
                 if ($scope.settings && $scope.settings.display && /^[a-zA-Z\.]+$/.test($scope.settings.display)) {
-
                     return eval("val." + $scope.settings.display);
                 }
                 return val;
@@ -38,7 +38,7 @@ var A = angular.module('multiSelect', [])
 
             $scope.Remove = function (val, event) {
                 if (!val) return;
-                $scope.model.splice($scope.model.indexOf(val), 1)
+                $scope.model.splice($scope.model.iOf(val), 1)
                 $scope.Change({
                     event: "remove",
                     value: val
@@ -47,10 +47,11 @@ var A = angular.module('multiSelect', [])
             }
 
             $scope.Show = function (val) {
-                return $scope.model.indexOf(val) < 0;
+                return $scope.model.iOf(val) < 0;
             }
 
             $scope.FocusSearch = function () {
+                if ($scope.disabled) return
                 element[0].getElementsByClassName("ms-search")[0].focus();
                 $scope.ShowOptions(true);
             }
@@ -99,6 +100,20 @@ var A = angular.module('multiSelect', [])
                         break;
                 }
             }
+
+            function Same(one, two) {
+                if ($scope.settings && $scope.settings.compare && /^[a-zA-Z\.]+$/.test($scope.settings.compare)) {
+                    return eval("one." + $scope.settings.compare + " === two." + $scope.settings.compare);
+                }
+                return one === two;
+            }
+
+            Array.prototype.iOf = function (obj) {
+                for (var i = 0; i < this.length; i++) {
+                    if (Same(obj, this[i])) return i;
+                }
+                return -1;
+            }
         }
     }
 })
@@ -115,6 +130,7 @@ var html = `<div>
             border-radius: 4px;
             border: 1px solid #a7a7a7;
             padding: 2px 34px 4px 4px;
+            cursor: text;
         }
         
         .ms-options {
@@ -132,6 +148,7 @@ var html = `<div>
         
         .ms-option {
             padding: 5px 15px;
+            cursor: pointer;
         }
         
         .ms-search {
@@ -178,7 +195,7 @@ var html = `<div>
         }
         
         .ms-item-label {
-            padding: 0px 1px 0px 5px;
+            padding: 0px 5px 0px 5px;
             vertical-align: middle;
             font-size: 15px;
         }
@@ -195,14 +212,26 @@ var html = `<div>
             background-color: aliceblue;
         }
 
+        .ms-input[disabled],
+        .ms-input[disabled] .ms-search {
+            background-color: #eee;
+            cursor: default !important;
+        }
+
+
+        .ms-input[disabled] .ms-caret,
+        .ms-input[disabled] .ms-item-remove {
+            display: none;
+        }
+
     </style>
     <div class="ms-main">
-        <div ng-click="FocusSearch()" class="ms-input">
+        <div ng-disabled="disabled" ng-click="FocusSearch()" class="ms-input">
             <div class="ms-item" ng-repeat="item in model">
                 <span class="ms-item-label">{{Display(item)}}</span>
                 <span class="ms-item-remove" ng-click="Remove(item,$event)">&times;</span>
             </div>
-            <input ng-keyup="Key($event)" ng-blur="HideOptions()" class="ms-search" ng-model="search">
+            <input ng-disabled="disabled" ng-keyup="Key($event)" ng-blur="HideOptions()" class="ms-search" ng-model="search">
             <span ng-click="ShowOptions()" class="ms-caret arrow-down"></span>
         </div>
         <div ng-show="showOptions" class="ms-options">
