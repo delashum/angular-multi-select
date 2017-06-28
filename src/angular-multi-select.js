@@ -43,7 +43,7 @@ var A = angular.module('multiSelect', [])
                     event: "remove",
                     value: val
                 })
-                if (event) event.stopPropagation();
+                if (event) event.stopPropagation()
             }
 
             $scope.Show = function (val) {
